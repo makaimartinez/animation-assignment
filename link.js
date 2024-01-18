@@ -72,12 +72,12 @@ class Link {
         // // left walk
         // this.animations[1][0].drawFrame(tick, this.x, this.y + 100, scale);
         // this.animations[1][1].drawFrame(tick, this.x + 100, this.y + 100, scale);
-        // // walk up
-        // this.animations[2][0].drawFrame(tick, this.x, this.y + 200, scale);
-        // this.animations[2][1].drawFrame(tick, this.x + 100, this.y + 200, scale);
-        // // walk down
-        // this.animations[3][0].drawFrame(tick, this.x, this.y + 300, scale);
-        // this.animations[3][1].drawFrame(tick, this.x + 100, this.y + 300, scale);
+        // walk up
+        this.animations[2][0].drawFrame(tick, 0, this.y + 200, scale);
+        this.animations[2][1].drawFrame(tick, 0 + 100, this.y + 200, scale);
+        // walk down
+        this.animations[3][0].drawFrame(tick, 0, this.y + 300, scale);
+        this.animations[3][1].drawFrame(tick, 0 + 100, this.y + 300, scale);
 
         // HitBox?
         //ctx.strokeStyle = "Green"
