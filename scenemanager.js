@@ -9,7 +9,8 @@ class SceneManager {
         // let tiles = new Tiles[10];
 
         this.animations = [];
-        loadGame();
+        this.animationCounter = 0;
+        this.loadGame();
     };
 
     loadGame() {
@@ -29,8 +30,8 @@ class SceneManager {
             this.animations.push([]);
         }
 
-        this.animations[0][0] = new Animator(spritesheet, 0, 0,  width, height, 1, 1, 0, false, false);
-       
+        this.animations[this.animationCounter] = new Animator(spritesheet, 0, 0,  width, height, 1, 1, 0, false, false);
+        this.animationCounter += 1;
     }
 
     update() {
