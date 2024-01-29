@@ -9,10 +9,7 @@ class SceneManager {
         // let tiles = new Tiles[10];
 
         this.animations = [];
-        // loadGame();
-
-        // NOTE: PLEASE USE THE FOLLOWING LINE TO TEST.
-        // this.loadLevel(levelTwo, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, true);
+        loadGame();
     };
 
     loadGame() {
@@ -43,9 +40,5 @@ class SceneManager {
     draw() {
         
     }
-
-
-
-
 
 }
