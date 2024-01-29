@@ -61,43 +61,33 @@ class Link {
         const TICK = gameEngine.clockTick;
         const MIN_WALK = 30;
         const MAX_WALK = 160;
-        const ACC_WALK = 40;
+        const ACC_WALK = 60;
 
         // update velocity
-        if (Math.abs(this.velocity.x) < MIN_WALK) { //if not moving, check for button then add movement
+        if (Math.abs(this.velocity.x) < MIN_WALK || Math.abs(this.velocity.y) < MIN_WALK) { //if not moving, check for button then add movement
             this.velocity.x = 0;
-            this.state = 0;
+            this.velocity.y = 0;
             if(gameEngine.right) {
                 this.velocity.x += ACC_WALK;
             }
-            if(gameEngine.left) {
+            else if(gameEngine.left) {
                 this.velocity.x -= ACC_WALK;
             }
-        } else if (Math.abs(this.velocity.x) >= MIN_WALK) { // if greater than min_walk, check if player wants to speed up or slow down
-            if(this.facing == false) { //facing right
-                if (gameEngine.right && !gameEngine.left && !gameEngine.down) {
-                    this.velocity.x += ACC_WALK * TICK;
-                } else if (gameEngine.left && !gameEngine.right && !gameEngine.down) {
-                    this.velocity.x -= DEC_SKID * TICK;
-                } else {
-                    this.velocity.x -= DEC_REL * TICK;
-                }
-            } else {
-                if (gameEngine.left && !gameEngine.right && !gameEngine.down) {
-                    this.velocity.x -= ACC_WALK * TICK;
-                } else if (gameEngine.right && !gameEngine.left && !gameEngine.down) {
-                    this.velocity.x += DEC_SKID * TICK;
-                } else {
-                    this.velocity.x += DEC_REL * TICK;
-                }
+            else if(gameEngine.down) {
+                this.velocity.y += ACC_WALK;
+            }
+            else if(gameEngine.up) {
+                this.velocity.y -= ACC_WALK;
             }
         }
 
         // update position
 
         // update direction 
-        if (this.velocity.x < 0) this.facing = true;
-        if (this.velocity.x > 0) this.facing = false;
+        if (this.velocity.x < 0) this.facing = 1;
+        if (this.velocity.x > 0) this.facing = 0;
+        if (this.velocity.y < 0) this.facing = 2;
+        if (this.velocity.y > 0) this.facing = 3;
 
         // update speed
         this.x += this.velocity.x * TICK * 2;
@@ -108,24 +98,7 @@ class Link {
         let scale = 3;
         let tick = gameEngine.clockTick;
 
-
-
-        
-        // right walk
-        this.animations[0][0].drawFrame(tick, this.x, this.y, scale);
-        // this.animations[0][1].drawFrame(tick, this.x + 100, this.y, scale);
-
-        // left walk
-        // this.animations[1][0].drawFrame(tick, this.x, this.y + 100, scale);
-        // this.animations[1][1].drawFrame(tick, this.x + 100, this.y + 100, scale);
-        
-        // walk up
-        // this.animations[2][0].drawFrame(tick, 0, this.y + 200, scale);
-        // this.animations[2][1].drawFrame(tick, 0 + 100, this.y + 200, scale);
-        
-        // walk down
-        // this.animations[3][0].drawFrame(tick, 0, this.y + 300, scale);
-        // this.animations[3][1].drawFrame(tick, 0 + 100, this.y + 300, scale);
+        this.animations[this.facing][0].drawFrame(tick, this.x, this.y, scale);
 
         // HitBox?
         ctx.strokeStyle = "Green"
