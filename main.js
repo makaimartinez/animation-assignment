@@ -6,6 +6,8 @@ let ctx;
 
 // sprites
 ASSET_MANAGER.queueDownload("./sprites/linksprites.png");
+ASSET_MANAGER.queueDownload("./tiles/stone.png");
+
 
 // music
 // ASSET_MANAGER.queueDownload("");		add music in future
@@ -26,12 +28,12 @@ ASSET_MANAGER.downloadAll(function () {
 	//PARAMS.CANVAS_WIDTH = canvas.width;
 	//PARAMS.CANVAS_HEIGHT = canvas.height;
 
-	let link = new Link();
-	gameEngine.addEntity(link);
+
 	
 	gameEngine.init(ctx);
-
-	//gameEngine.addEntity(new SceneManager(gameEngine));
+	let link = new Link();
+	gameEngine.addEntity(link);
+	gameEngine.addEntity(new SceneManager(gameEngine));
 	// scene manager manages which scene we're in (level 1 sky, bricks, goombas, etc.)
 	// new SceneManager(gameEngine);
 

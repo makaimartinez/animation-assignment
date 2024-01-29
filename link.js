@@ -19,7 +19,7 @@ class Link {
 
     loadAnimations(spritesheet) {
 
-        for (var i = 0; i < 4; i++) { // 4 directions
+        for (var i = 0; i < 5; i++) { // 5 states
             this.animations.push([]);
             for (var j = 0; j < 2; j++) { // 2 variations
                 this.animations[i].push([]);
@@ -48,13 +48,15 @@ class Link {
 
 
         // walk up
-        this.animations[2][0] = new Animator(spritesheet, 0, 5,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
+        this.animations[2][0] = new Animator(spritesheet, 0, 6,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
         this.animations[2][1] = new Animator(spritesheet, 0, 134,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
 
         // walk down
-        this.animations[3][0] = new Animator(spritesheet, 0, 69,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
-        this.animations[3][1] = new Animator(spritesheet, 0, 197,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
+        this.animations[3][0] = new Animator(spritesheet, 0, 70,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
+        this.animations[3][1] = new Animator(spritesheet, 0, 198,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
 
+        // idle
+        this.animations[4][0] = new Animator(spritesheet, 0, 198,  this.width, 27, 1, this.totalTime, this.framePadding, this.reverse, this.loop);
     }
 
     update() {
@@ -84,10 +86,11 @@ class Link {
         // update position
 
         // update direction 
-        if (this.velocity.x < 0) this.facing = 1;
-        if (this.velocity.x > 0) this.facing = 0;
-        if (this.velocity.y < 0) this.facing = 2;
-        if (this.velocity.y > 0) this.facing = 3;
+        if (this.velocity.x < 0) { this.facing = 1; }
+        else if (this.velocity.x > 0) { this.facing = 0; }
+        else if (this.velocity.y < 0) { this.facing = 2; }
+        else if (this.velocity.y > 0) { this.facing = 3; }
+        else { this.facing = 4;}
 
         // update speed
         this.x += this.velocity.x * TICK * 2;
@@ -101,7 +104,7 @@ class Link {
         this.animations[this.facing][0].drawFrame(tick, this.x, this.y, scale);
 
         // HitBox?
-        ctx.strokeStyle = "Green"
+        ctx.strokeStyle = "Red"
         ctx.strokeRect(this.x, this.y,  this.width * scale, this.height * scale);
     }
 
