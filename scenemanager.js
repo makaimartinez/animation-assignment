@@ -1,7 +1,7 @@
 class SceneManager {
     constructor(GameEngine) {
         this.game = GameEngine;
-        this.game.camera = this;
+        this.game.camera = this;    // anonymous entity, give it a direct reference by setting camera = to this instance of scene manager
         this.x = 0;
         this.y = 0;
         
@@ -14,7 +14,7 @@ class SceneManager {
         this.animations = [];
         this.animationCounter = 0;
 
-        this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
+        this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH);
         this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, this.title);
     };
 
@@ -29,7 +29,7 @@ class SceneManager {
         this.level = level;
         this.loading = true;
         this.clearEntities();
-        this.x = 0;
+        this.x = 0;     // reset camera 
 
         if (transition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y, title, this.loading));
@@ -78,11 +78,21 @@ class SceneManager {
     update() {
         // PARAMS.DEBUG = document.getElementById("debug").checked;     // errore "Cannot read properties of null (reading 'checked')"
 
+        let midpointx = PARAMS.CANVAS_WIDTH / 2 - PARAMS.BLOCKWIDTH / 2;
+        let midpointy = PARAMS.CANVAS_HEIGHT / 2 - PARAMS.BLOCKWIDTH / 2;
+
+
+        if (this.x < this.link.x - midpointx) this.x = this.link.x - midpointx;
+        if (this.y > this.link.y - midpointy) this.y = this.link.y - midpointy;
+        // if (this.x < this.link.x - midpoint * 2) this.x = this.link.x + midpoint;
+        // if (this.y < this.link.y - midpoint * 2) this.y = this.link.y + midpoint;
+
+
         if (this.title && this.game.click) {
             if (this.game.click && this.game.click.y > 9  && this.game.mouse.y < 9.5 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
-                this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
-                this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0, true);
+                this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH);
+                this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 10 * PARAMS.BLOCKWIDTH, true); // SETS STARTING POSITION
             }
         // } else {
         //     this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
