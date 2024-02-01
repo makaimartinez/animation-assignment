@@ -1,11 +1,13 @@
 class Link {
     
-    constructor() {
-        this.x = 100;
-        this.y = 100;
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+
+        //this.game.link = this;
 
         this.facing = 0; // 0 = right, 1 = left, 2 = up, 3 = down
         this.velocity = { x: 0, y: 0 };
+        this.dead = false;
 
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/linksprites.png");
@@ -59,26 +61,49 @@ class Link {
         this.animations[4][0] = new Animator(spritesheet, 0, 198,  this.width, 27, 1, this.totalTime, this.framePadding, this.reverse, this.loop);
     }
 
+    die() {
+        this.velocity.y = -640;
+        this.dead = true;
+        // ASSET_MANAGER.pauseBackgroundMusic();
+    };
+
+
     update() {
-        const TICK = gameEngine.clockTick;
+        const TICK = this.game.clockTick;
         const MIN_WALK = 30;
         const MAX_WALK = 160;
         const ACC_WALK = 60;
+
+        // check if dead
+        if (this.dead) {
+
+            this.velocity.y += RUN_FALL * TICK;
+            this.y += this.velocity.y * TICK * PARAMS.SCALE;    // i believe this makes the jump animation before death
+
+            if (this.y > PARAMS.BLOCKWIDTH * 16) {
+                this.dead = false;
+                this.game.camera.lives--;
+                if (this.game.camera.lives < 0)
+                    this.game.camera.gameOver = true;
+                else this.game.camera.loadLevel(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH, true, false);
+            }
+        }
+
 
         // update velocity
         if (Math.abs(this.velocity.x) < MIN_WALK || Math.abs(this.velocity.y) < MIN_WALK) { //if not moving, check for button then add movement
             this.velocity.x = 0;
             this.velocity.y = 0;
-            if(gameEngine.right) {
+            if(this.game.right) {
                 this.velocity.x += ACC_WALK;
             }
-            else if(gameEngine.left) {
+            else if(this.game.left) {
                 this.velocity.x -= ACC_WALK;
             }
-            else if(gameEngine.down) {
+            else if(this.game.down) {
                 this.velocity.y += ACC_WALK;
             }
-            else if(gameEngine.up) {
+            else if(this.game.up) {
                 this.velocity.y -= ACC_WALK;
             }
         }
@@ -98,14 +123,13 @@ class Link {
     }
 
     draw() {
-        let scale = 3;
-        let tick = gameEngine.clockTick;
+        let tick = this.game.clockTick;
 
-        this.animations[this.facing][0].drawFrame(tick, this.x, this.y, scale);
+        this.animations[this.facing][0].drawFrame(tick, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
 
         // HitBox?
         ctx.strokeStyle = "Red"
-        ctx.strokeRect(this.x, this.y,  this.width * scale, this.height * scale);
+        ctx.strokeRect(this.x - this.game.camera.x, this.y,  this.width * PARAMS.SCALE, this.height * PARAMS.SCALE);
     }
 
 }

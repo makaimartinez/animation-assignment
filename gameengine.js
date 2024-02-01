@@ -9,16 +9,19 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
 
+        this.surfaceWidth = null;
+        this.surfaceHeight = null;
+
         // Information on the input
         this.left = false;
         this.right = false;
         this.up = false;
         this.down = false;
 
-        this.click = null;
-        this.mouse = null;
-        this.wheel = null;
-        this.keys = {};
+        // this.click = null;
+        // this.mouse = null;
+        // this.wheel = null;
+        // this.keys = {};
 
         // Options and the Details
         this.options = options || {
@@ -36,11 +39,11 @@ class GameEngine {
 
     start() {
         this.running = true;
-        const gameLoop = () => {                         // simulate continuous time with little slivers of discrete time (ticks)
+        const gameLoop = () => {                            // simulate continuous time with little slivers of discrete time (ticks)
             this.loop();
-            requestAnimFrame(gameLoop, this.ctx.canvas);     // recursive call
+            requestAnimFrame(gameLoop, this.ctx.canvas);    // recursive call
         };
-        gameLoop();//define function then immediately call it
+        gameLoop();                                         //define function then immediately call it
     };
 
     startInput() {
@@ -57,10 +60,10 @@ class GameEngine {
         }
         function mouseClickListener (e) {
             that.click = getXandY(e);
-            if (PARAMS.DEBUG) console.log(that.click);
+            // if (PARAMS.DEBUG) console.log(that.click);
         }
         function wheelListener (e) {
-            e.preventDefault(); // Prevent Scrolling
+            e.preventDefault();                             // Prevent Scrolling
             that.wheel = e.deltaY;
         }
 
@@ -140,6 +143,8 @@ class GameEngine {
         for (let i = this.entities.length - 1; i >= 0; i--) {
             this.entities[i].draw(this.ctx, this);
         }
+
+        this.camera.draw(this.ctx);
     };
 
     update() {
@@ -154,6 +159,8 @@ class GameEngine {
                 entity.update();            // it calls update
             }
         }
+
+        this.camera.update();
 
         // counts backwards like we are removing as we iterate, doesn't miss any elements
         for (let i = this.entities.length - 1; i >= 0; --i) {
