@@ -108,7 +108,7 @@ class Link {
             }
         }
 
-        // update position
+        
 
         // update direction 
         if (this.velocity.x < 0) { this.facing = 1; }
@@ -117,19 +117,20 @@ class Link {
         else if (this.velocity.y > 0) { this.facing = 3; }
         else { this.facing = 4;}
 
-        // update speed
-        this.x += this.velocity.x * TICK * 2;
-        this.y += this.velocity.y * TICK * 2;
+        // update position
+        // gameworld coordinates are this.x and this.y
+        this.x += this.velocity.x * TICK * PARAMS.SCALE;
+        this.y += this.velocity.y * TICK * PARAMS.SCALE;
     }
 
     draw() {
         let tick = this.game.clockTick;
 
-        this.animations[this.facing][0].drawFrame(tick, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        this.animations[this.facing][0].drawFrame(tick, this.x - this.game.camera.x, this.y - this.game.camera.y, PARAMS.SCALE);
 
         // HitBox?
-        ctx.strokeStyle = "Red"
-        ctx.strokeRect(this.x - this.game.camera.x, this.y,  this.width * PARAMS.SCALE, this.height * PARAMS.SCALE);
+        // ctx.strokeStyle = "Red"
+        // ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y,  this.width * PARAMS.SCALE, this.height * PARAMS.SCALE);
     }
 
 }
