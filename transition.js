@@ -21,23 +21,10 @@ class TransitionScreen {
         if (this.loading) {
             ctx.fillText("LOADING...", 6 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH);
         }
-        // ctx.fillStyle = "White";
-        // ctx.fillText("MARRIOTT", 1.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText((this.game.camera.score + "").padStart(8, "0"), 1.5 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText("x" + (this.game.camera.coins < 10 ? "0" : "") + this.game.camera.coins, 6.5 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText("WORLD", 9 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText(this.level.label, 9.5 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText("TIME", 12.5 * PARAMS.BLOCKWIDTH, 1 * PARAMS.BLOCKWIDTH);
-        // ctx.fillText(this.game.time, 13 * PARAMS.BLOCKWIDTH, 1.5 * PARAMS.BLOCKWIDTH);
 
         if (this.gameOver) {
             ctx.fillText("GAME OVER", 6 * PARAMS.BLOCKWIDTH, 9 * PARAMS.BLOCKWIDTH);
         }
-        // else {
-        //     ctx.fillText("WORLD " + this.level.label, 5.5 * PARAMS.BLOCKWIDTH, 5 * PARAMS.BLOCKWIDTH);
-        //     ctx.fillText("x  " + this.game.camera.lives, 7.5 * PARAMS.BLOCKWIDTH, 7.5 * PARAMS.BLOCKWIDTH);
-        //     ctx.drawImage(this.game.mario.spritesheet, 210, 0, 16, 16, 6 * PARAMS.BLOCKWIDTH, 6.5 * PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
-        // }
     };
 
     // drawMinimap() {

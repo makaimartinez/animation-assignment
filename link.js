@@ -57,7 +57,7 @@ class Link {
         this.animations[3][0] = new Animator(spritesheet, 0, 70,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
         this.animations[3][1] = new Animator(spritesheet, 0, 198,  this.width, 27, this.frameCount, this.totalTime, this.framePadding, this.reverse, this.loop);
 
-        // idle
+        // idle W I P
         this.animations[4][0] = new Animator(spritesheet, 0, 198,  this.width, 27, 1, this.totalTime, this.framePadding, this.reverse, this.loop);
     }
 
@@ -115,7 +115,7 @@ class Link {
         else if (this.velocity.x > 0) { this.facing = 0; }
         else if (this.velocity.y < 0) { this.facing = 2; }
         else if (this.velocity.y > 0) { this.facing = 3; }
-        else { this.facing = 4;}
+        //  else { this.facing = 4;}                                // IDLE IS W I P
 
         // update position
         // gameworld coordinates are this.x and this.y

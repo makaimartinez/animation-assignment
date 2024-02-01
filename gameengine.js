@@ -144,28 +144,29 @@ class GameEngine {
             this.entities[i].draw(this.ctx, this);
         }
 
+        // prioritize the camera and draw after everything
         this.camera.draw(this.ctx);
     };
 
     update() {
         let entitiesCount = this.entities.length;
 
-        // go through every entity and ask it to update
-        for (let i = 0; i < entitiesCount; i++) {
+        for (let i = 0; i < entitiesCount; i++) {       // go through every entity and ask it to update
             let entity = this.entities[i];
 
             // if the entity is removefromworld it does not get the chance to update. Or...
-            if (!entity.removeFromWorld) { // if the entity is not going to be removed
-                entity.update();            // it calls update
+            if (!entity.removeFromWorld) {              // if the entity is not going to be removed
+                entity.update();                        // it calls update
             }
         }
 
-        this.camera.update();
+        this.camera.update();                           // prioritize the camera and update after everything
+
 
         // counts backwards like we are removing as we iterate, doesn't miss any elements
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {     // checking for remove from world flag (true/null)
-                this.entities.splice(i, 1);  // splice is a special array method, used to delete element at index i
+                this.entities.splice(i, 1);             // splice is a special array method, used to delete element at index i
             }
         }
     };
@@ -178,5 +179,3 @@ class GameEngine {
     };
 
 }
-
-// KV Le was here :)

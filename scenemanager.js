@@ -33,18 +33,27 @@ class SceneManager {
 
         if (transition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y, title, this.loading));
-        }
+        } else {
 
-        // ENVIRONMENT 0
+        // ENVIRONMENT
+
         // this.spritesheet = ASSET_MANAGER.getAsset("./tiles/stone.png");
         // this.loadAnimation(this.spritesheet);
 
-        // if (level.music && !this.title) {
-        //     ASSET_MANAGER.pauseBackgroundMusic();
-        //     ASSET_MANAGER.playAsset(level.music);
-        // }
+
+        // MUSIC
+        if (level.music && !this.title) {
+            ASSET_MANAGER.pauseBackgroundMusic();
+            ASSET_MANAGER.playAsset(level.music);
+        }
 
 
+
+        // ITEMS
+
+
+
+        // PLAYER
         this.link.x = x;
         this.link.y = y;
         this.link.removeFromWorld = false;      // I want link to be persistent after removing him from the world in loadGame()
@@ -60,9 +69,8 @@ class SceneManager {
 
         this.time = 400;
         this.game.camera.paused = false;
-
-
-    }
+        }
+    };
 
     loadAnimation(spritesheet) {
         let width = 16;
@@ -75,8 +83,17 @@ class SceneManager {
         this.animationCounter += 1;
     }
 
+    // check HTML elements
+    updateAudio() {
+        var mute = document.getElementById("mute").checked;
+        var volume = document.getElementById("volume").value;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
+    }
+
     update() {
-        // PARAMS.DEBUG = document.getElementById("debug").checked;     // errore "Cannot read properties of null (reading 'checked')"
+        PARAMS.DEBUG = document.getElementById("debug").checked;     // errore "Cannot read properties of null (reading 'checked')"
 
         let midpointx = PARAMS.CANVAS_WIDTH / 2 - PARAMS.BLOCKWIDTH / 2;
         let midpointy = PARAMS.CANVAS_HEIGHT / 2 - PARAMS.BLOCKWIDTH / 2;

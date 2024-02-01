@@ -11,13 +11,13 @@ ASSET_MANAGER.queueDownload("./tiles/stone.png");
 
 
 // music
-// ASSET_MANAGER.queueDownload("");		add music in future
+ASSET_MANAGER.queueDownload("./music/testmusic.mp3");		// add music in future
 
 // sfx
 
 ASSET_MANAGER.downloadAll(function () {
 
-	// ASSET_MANAGER.autoRepeat("");		add music in future
+	ASSET_MANAGER.autoRepeat("./music/testmusic.mp3");		
 
 	PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
@@ -29,14 +29,10 @@ ASSET_MANAGER.downloadAll(function () {
 	PARAMS.CANVAS_WIDTH = canvas.width;
 	PARAMS.CANVAS_HEIGHT = canvas.height;
 
-
-	
 	gameEngine.init(ctx);
-	// let link = new Link();
-	// gameEngine.addEntity(link);
-	gameEngine.addEntity(new SceneManager(gameEngine));
+
 	// scene manager manages which scene we're in (level 1 sky, bricks, goombas, etc.)
-	// new SceneManager(gameEngine);
+	gameEngine.addEntity(new SceneManager(gameEngine));
 
 	gameEngine.start();
 });
