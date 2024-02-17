@@ -4,6 +4,7 @@ class SceneManager {
         this.game.camera = this;    // anonymous entity, give it a direct reference by setting camera = to this instance of scene manager
         this.x = 0;
         this.y = 0;
+        this.lives = 3;
         
         
         // let tiles = new Tiles[10];
@@ -33,12 +34,55 @@ class SceneManager {
 
         if (transition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y, title, this.loading));
-        } else {
+        } 
+        
+        else if (!this.title) {
 
         // ENVIRONMENT
 
-        // this.spritesheet = ASSET_MANAGER.getAsset("./tiles/stone.png");
-        // this.loadAnimation(this.spritesheet);
+        // left wall
+        for (let i = 0; i < 13; i++) {
+            this.game.addEntity(new Wall(this.game, -7, i));
+            this.game.addEntity(new Wall(this.game, -6, i));
+            this.game.addEntity(new Wall(this.game, -5, i));
+            this.game.addEntity(new Wall(this.game, -4, i));
+            this.game.addEntity(new Wall(this.game, -3, i));
+            this.game.addEntity(new Wall(this.game, -2, i));
+            this.game.addEntity(new Wall(this.game, -1, i));
+            this.game.addEntity(new Wall(this.game, 0, i));
+        }
+
+        // right wall
+        for (let i = 0; i < 13; i++) {
+            this.game.addEntity(new Wall(this.game, 16, i));
+            this.game.addEntity(new Wall(this.game, 17, i));
+            this.game.addEntity(new Wall(this.game, 18, i));
+            this.game.addEntity(new Wall(this.game, 19, i));
+            this.game.addEntity(new Wall(this.game, 20, i));
+            this.game.addEntity(new Wall(this.game, 21, i));
+            this.game.addEntity(new Wall(this.game, 22, i));
+            this.game.addEntity(new Wall(this.game, 23, i));
+        }
+
+        // top wall
+        for (let i = -7; i < 24; i++) {
+            this.game.addEntity(new Wall(this.game, i, 0));
+            this.game.addEntity(new Wall(this.game, i, -1));
+            this.game.addEntity(new Wall(this.game, i, -2));
+            this.game.addEntity(new Wall(this.game, i, -3));
+            this.game.addEntity(new Wall(this.game, i, -4));
+            this.game.addEntity(new Wall(this.game, i, -5));
+        }
+
+        // bottom wall
+        for (let i = -7; i < 24; i++) {
+            this.game.addEntity(new Wall(this.game, i, 12));
+            this.game.addEntity(new Wall(this.game, i, 13));
+            this.game.addEntity(new Wall(this.game, i, 14));
+            this.game.addEntity(new Wall(this.game, i, 15));
+            this.game.addEntity(new Wall(this.game, i, 16));
+            this.game.addEntity(new Wall(this.game, i, 17));
+        }
 
 
         // MUSIC
@@ -93,20 +137,21 @@ class SceneManager {
     }
 
     update() {
-        PARAMS.DEBUG = document.getElementById("debug").checked;     // errore "Cannot read properties of null (reading 'checked')"
+        PARAMS.DEBUG = document.getElementById("debug").checked;     
+        this.updateAudio();
 
         let midpointx = PARAMS.CANVAS_WIDTH / 2 - PARAMS.BLOCKWIDTH / 2;
         let midpointy = PARAMS.CANVAS_HEIGHT / 2 - PARAMS.BLOCKWIDTH / 2;
 
 
-        if (this.x < this.link.x - midpointx) this.x = this.link.x - midpointx;
-        if (this.y > this.link.y - midpointy) this.y = this.link.y - midpointy;
-        // if (this.x < this.link.x - midpoint * 2) this.x = this.link.x + midpoint;
-        // if (this.y < this.link.y - midpoint * 2) this.y = this.link.y + midpoint;
+        // if (this.x < this.link.x - midpointx) this.x = this.link.x - midpointx;
+        // if (this.y > this.link.y - midpointy) this.y = this.link.y - midpointy;
+        this.x = this.link.x - midpointx;
+        this.y = this.link.y - midpointy;
 
 
         if (this.title && this.game.click) {
-            if (this.game.click && this.game.click.y > 9  && this.game.mouse.y < 9.5 * PARAMS.BLOCKWIDTH) {
+            if (this.game.click && this.game.click.y > 9 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 9.5 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
                 this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH);
                 this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 10 * PARAMS.BLOCKWIDTH, true); // SETS STARTING POSITION

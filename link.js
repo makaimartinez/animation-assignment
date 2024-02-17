@@ -9,6 +9,12 @@ class Link {
         this.velocity = { x: 0, y: 0 };
         this.dead = false;
 
+        this.width = 23;
+        this.height = 26;
+
+        this.prevX = null;
+        this.prevY = null;
+
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/linksprites.png");
 
@@ -17,6 +23,8 @@ class Link {
         // sprite height = 23 (but they all have space in between)
         this.animations = [];
         this.loadAnimations(this.spritesheet)
+        this.BB = new BoundingBox(this.x, this.y, this.width * PARAMS.SCALE, this.height * PARAMS.SCALE, "player");
+
     }
 
     loadAnimations(spritesheet) {
@@ -32,8 +40,7 @@ class Link {
         // sprite row width = 288
         // 288 / 12 = 24 frame width
         // sprite height = 24
-        this.width = 23;
-        this.height = 26;
+        
         this.frameCount = 12;
         this.totalTime = 0.5;
         this.framePadding = 1;
@@ -69,6 +76,9 @@ class Link {
 
 
     update() {
+
+        this.getPreviousXandY();
+
         const TICK = this.game.clockTick;
         const MIN_WALK = 30;
         const MAX_WALK = 160;
@@ -115,12 +125,47 @@ class Link {
         else if (this.velocity.x > 0) { this.facing = 0; }
         else if (this.velocity.y < 0) { this.facing = 2; }
         else if (this.velocity.y > 0) { this.facing = 3; }
-        //  else { this.facing = 4;}                                // IDLE IS W I P
-
+        //  else { this.facing = 4;}                               
+        
         // update position
         // gameworld coordinates are this.x and this.y
         this.x += this.velocity.x * TICK * PARAMS.SCALE;
         this.y += this.velocity.y * TICK * PARAMS.SCALE;
+
+        this.collide();
+        this.updateBB();
+    }
+
+    collide() {
+        let that = this;
+        this.game.entities.forEach(function(entity) {
+            if(entity.BB && entity.BB != that && that.BB.collide(entity.BB)) {
+                if(entity.BB.name == "wall")  {
+                    if (that.facing == 1) {
+                        that.x = that.prevX + 1;
+                    }
+                    if (that.facing == 0) {
+                        that.x = that.prevX - 1;
+                    }
+                    if (that.facing == 2) {
+                        that.y = that.prevY + 1;
+                    }
+                    if (that.facing == 3) {
+                        that.y = that.prevY - 1;
+                    }
+                }
+
+            }
+        })
+    }
+
+    getPreviousXandY() {
+        this.prevX = this.x;
+        this.prevY = this.y;
+    }
+
+    updateBB() {
+        this.BB = new BoundingBox(this.x, this.y, this.width * PARAMS.SCALE, this.height * PARAMS.SCALE, "player");
     }
 
     draw() {
@@ -129,8 +174,8 @@ class Link {
         this.animations[this.facing][0].drawFrame(tick, this.x - this.game.camera.x, this.y - this.game.camera.y, PARAMS.SCALE);
 
         // HitBox?
-        // ctx.strokeStyle = "Red"
-        // ctx.strokeRect(this.x - this.game.camera.x, this.y - this.game.camera.y,  this.width * PARAMS.SCALE, this.height * PARAMS.SCALE);
+        ctx.strokeStyle = "Red"
+        ctx.strokeRect(this.x  - this.game.camera.x, this.y - this.game.camera.y,  this.width * PARAMS.SCALE, this.height * PARAMS.SCALE);
     }
 
 }
