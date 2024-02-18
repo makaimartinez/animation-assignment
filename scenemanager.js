@@ -94,6 +94,7 @@ class SceneManager {
 
 
         // ITEMS
+        this.game.addEntity(new Torch(this.game, 2, 2));
 
 
 

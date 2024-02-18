@@ -5,7 +5,7 @@ class Wall {
         Object.assign(this, { game, x, y });
         this.x *= PARAMS.BLOCKWIDTH;
         this.y *= PARAMS.BLOCKWIDTH;
-        this.spritesheet = ASSET_MANAGER.getAsset("./tiles/stone.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/stone.png");
         this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, "wall");
 
     }
@@ -23,3 +23,4 @@ class Wall {
     }
 
 }
+

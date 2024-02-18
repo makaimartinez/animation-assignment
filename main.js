@@ -6,8 +6,10 @@ let ctx;
 
 // sprites
 ASSET_MANAGER.queueDownload("./sprites/linksprites.png");
+ASSET_MANAGER.queueDownload("./sprites/idlelink.png");
 ASSET_MANAGER.queueDownload("./sprites/title.png");
-ASSET_MANAGER.queueDownload("./tiles/stone.png");
+ASSET_MANAGER.queueDownload("./sprites/stone.png");
+ASSET_MANAGER.queueDownload("./sprites/torch.png");
 
 
 // music
