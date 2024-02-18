@@ -174,10 +174,10 @@ class Link {
 
         this.animations[this.facing][0].drawFrame(tick, this.x - this.game.camera.x, this.y - this.game.camera.y, PARAMS.SCALE);
 
-        // HitBox?
+        // hitbox
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = "Red"
-            ctx.strokeRect(this.x  - this.game.camera.x, this.y - this.game.camera.y,  this.width * PARAMS.SCALE, this.height * PARAMS.SCALE);
+            ctx.strokeRect(this.BB.x  - this.game.camera.x, this.BB.y - this.game.camera.y,  this.BB.width, this.BB.height);
         }
     }
 
