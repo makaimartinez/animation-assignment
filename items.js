@@ -1,7 +1,7 @@
 class Torch {
 
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
+    constructor(game,link) {
+        Object.assign(this, { game, link});
         this.x *= PARAMS.BLOCKWIDTH;
         this.y *= PARAMS.BLOCKWIDTH;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/torch.png");
@@ -23,14 +23,18 @@ class Torch {
     }
 
     update() {
+        this.x = this.link.x - this.game.camera.x - 8;
+        this.y = this.link.y - this.game.camera.y + 8;
+    }
 
-
+    getx() {
+        return this.x;
     }
 
 
     draw() {
         let tick = this.game.clockTick;
-        this.animations.drawFrame(tick, this.x - this.game.camera.x, this.y - this.game.camera.y, 1);
+        this.animations.drawFrame(tick, this.x, this.y, 1);
         // hitbox
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = "Red"

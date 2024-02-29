@@ -78,7 +78,7 @@ class Link {
 
     update() {
 
-        this.getPreviousXandY();
+        this.updatePreviousXandY();
 
         const TICK = this.game.clockTick;
         const MIN_WALK = 30;
@@ -142,17 +142,17 @@ class Link {
         this.game.entities.forEach(function(entity) {
             if(entity.BB && entity.BB != that && that.BB.collide(entity.BB)) {
                 if(entity.BB.name == "wall")  {
-                    if (that.facing == 1) {
-                        that.x = that.prevX + 1;
+                    if (that.facing == 0) {     // right
+                        that.x = that.prevX + that.velocity.x;
                     }
-                    if (that.facing == 0) {
-                        that.x = that.prevX - 1;
+                    if (that.facing == 1) {     // left
+                        that.x = that.BB.x - that.velocity.x;
                     }
-                    if (that.facing == 2) {
-                        that.y = that.prevY + 1;
+                    if (that.facing == 2) {     // up
+                        that.y -= that.velocity.y;
                     }
-                    if (that.facing == 3) {
-                        that.y = that.prevY - 1;
+                    if (that.facing == 3) {     // down
+                        that.y = that.prevY - that.velocity.y;
                     }
                 }
 
@@ -160,14 +160,23 @@ class Link {
         })
     }
 
-    getPreviousXandY() {
+    updateBB() {
+        this.BB = new BoundingBox(this.x, this.y, this.width * PARAMS.SCALE, this.height * PARAMS.SCALE, "player");
+    }
+
+    updatePreviousXandY() {
         this.prevX = this.x;
         this.prevY = this.y;
     }
 
-    updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, this.width * PARAMS.SCALE, this.height * PARAMS.SCALE, "player");
-    }
+    getBottom() { return this.y + this.height; }
+    getOldBottom() { return this.prevY + this.height; }
+    getLeft(){ return this.x; }
+    getOldLeft(){ return this.prevX; }
+    getRight() { return this.x + this.width; }
+    getOldRight() { return this.prevX + this.width; }
+    getTop() { return this.y;}
+    getOldTop() { return this.prevY;}
 
     draw() {
         let tick = this.game.clockTick;

@@ -15,8 +15,11 @@ class SceneManager {
         this.animations = [];
         this.animationCounter = 0;
 
+
         this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH);
         this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, this.title);
+
+
     };
 
     clearEntities() {
@@ -37,83 +40,84 @@ class SceneManager {
         } 
         
         else if (!this.title) {
+            this.inTransition = false;
+            // ENVIRONMENT
 
-        // ENVIRONMENT
+            // left wall
+            for (let i = 0; i < 13; i++) {
+                this.game.addEntity(new Wall(this.game, -7, i));
+                this.game.addEntity(new Wall(this.game, -6, i));
+                this.game.addEntity(new Wall(this.game, -5, i));
+                this.game.addEntity(new Wall(this.game, -4, i));
+                this.game.addEntity(new Wall(this.game, -3, i));
+                this.game.addEntity(new Wall(this.game, -2, i));
+                this.game.addEntity(new Wall(this.game, -1, i));
+                this.game.addEntity(new Wall(this.game, 0, i));
+            }
 
-        // left wall
-        for (let i = 0; i < 13; i++) {
-            this.game.addEntity(new Wall(this.game, -7, i));
-            this.game.addEntity(new Wall(this.game, -6, i));
-            this.game.addEntity(new Wall(this.game, -5, i));
-            this.game.addEntity(new Wall(this.game, -4, i));
-            this.game.addEntity(new Wall(this.game, -3, i));
-            this.game.addEntity(new Wall(this.game, -2, i));
-            this.game.addEntity(new Wall(this.game, -1, i));
-            this.game.addEntity(new Wall(this.game, 0, i));
-        }
+            // right wall
+            for (let i = 0; i < 13; i++) {
+                this.game.addEntity(new Wall(this.game, 16, i));
+                this.game.addEntity(new Wall(this.game, 17, i));
+                this.game.addEntity(new Wall(this.game, 18, i));
+                this.game.addEntity(new Wall(this.game, 19, i));
+                this.game.addEntity(new Wall(this.game, 20, i));
+                this.game.addEntity(new Wall(this.game, 21, i));
+                this.game.addEntity(new Wall(this.game, 22, i));
+                this.game.addEntity(new Wall(this.game, 23, i));
+            }
 
-        // right wall
-        for (let i = 0; i < 13; i++) {
-            this.game.addEntity(new Wall(this.game, 16, i));
-            this.game.addEntity(new Wall(this.game, 17, i));
-            this.game.addEntity(new Wall(this.game, 18, i));
-            this.game.addEntity(new Wall(this.game, 19, i));
-            this.game.addEntity(new Wall(this.game, 20, i));
-            this.game.addEntity(new Wall(this.game, 21, i));
-            this.game.addEntity(new Wall(this.game, 22, i));
-            this.game.addEntity(new Wall(this.game, 23, i));
-        }
+            // top wall
+            for (let i = -7; i < 24; i++) {
+                this.game.addEntity(new Wall(this.game, i, 0));
+                this.game.addEntity(new Wall(this.game, i, -1));
+                this.game.addEntity(new Wall(this.game, i, -2));
+                this.game.addEntity(new Wall(this.game, i, -3));
+                this.game.addEntity(new Wall(this.game, i, -4));
+                this.game.addEntity(new Wall(this.game, i, -5));
+            }
 
-        // top wall
-        for (let i = -7; i < 24; i++) {
-            this.game.addEntity(new Wall(this.game, i, 0));
-            this.game.addEntity(new Wall(this.game, i, -1));
-            this.game.addEntity(new Wall(this.game, i, -2));
-            this.game.addEntity(new Wall(this.game, i, -3));
-            this.game.addEntity(new Wall(this.game, i, -4));
-            this.game.addEntity(new Wall(this.game, i, -5));
-        }
-
-        // bottom wall
-        for (let i = -7; i < 24; i++) {
-            this.game.addEntity(new Wall(this.game, i, 12));
-            this.game.addEntity(new Wall(this.game, i, 13));
-            this.game.addEntity(new Wall(this.game, i, 14));
-            this.game.addEntity(new Wall(this.game, i, 15));
-            this.game.addEntity(new Wall(this.game, i, 16));
-            this.game.addEntity(new Wall(this.game, i, 17));
-        }
-
-
-        // MUSIC
-        if (level.music && !this.title) {
-            ASSET_MANAGER.pauseBackgroundMusic();
-            ASSET_MANAGER.playAsset(level.music);
-        }
+            // bottom wall
+            for (let i = -7; i < 24; i++) {
+                this.game.addEntity(new Wall(this.game, i, 12));
+                this.game.addEntity(new Wall(this.game, i, 13));
+                this.game.addEntity(new Wall(this.game, i, 14));
+                this.game.addEntity(new Wall(this.game, i, 15));
+                this.game.addEntity(new Wall(this.game, i, 16));
+                this.game.addEntity(new Wall(this.game, i, 17));
+            }
 
 
-
-        // ITEMS
-        this.game.addEntity(new Torch(this.game, 2, 2));
+            // MUSIC
+            if (level.music && !this.title) {
+                ASSET_MANAGER.pauseBackgroundMusic();
+                ASSET_MANAGER.playAsset(level.music);
+            }
 
 
 
-        // PLAYER
-        this.link.x = x;
-        this.link.y = y;
-        this.link.removeFromWorld = false;      // I want link to be persistent after removing him from the world in loadGame()
-        this.link.velocity = { x: 0, y: 0 };    
-        this.link.state = 0                     // link enters level in right facing state;
+            // ITEMS
+            this.torch = new Torch(this.game, this.link);
+            this.game.addEntity(this.torch);
 
-        var that = this;
-        var link = false;
-        this.game.entities.forEach(function(entity) {       // if link is there dont add him in
-            if(that.link === entity) link = true;
-        });
-        if(!link) this.game.addEntity(this.link);           // if link is not there add him.
 
-        this.time = 400;
-        this.game.camera.paused = false;
+
+            // PLAYER
+            this.link.x = x;
+            this.link.y = y;
+            this.link.removeFromWorld = false;      // I want link to be persistent after removing him from the world
+            this.link.velocity = { x: 0, y: 0 };    
+            this.link.state = 0                     // link enters level in right facing state;
+
+            var that = this;
+            var link = false;
+            this.game.entities.forEach(function(entity) {       // if link is there dont add him in
+                if(that.link === entity) link = true;
+            });
+            if(!link) this.game.addEntity(this.link);           // if link is not there add him.
+
+            // this.time = 400;
+            this.game.camera.paused = false;
         }
     };
 
@@ -154,6 +158,7 @@ class SceneManager {
         if (this.title && this.game.click) {
             if (this.game.click && this.game.click.y > 9 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 9.5 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
+                this.inTransition = true;
                 this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH);
                 this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 10 * PARAMS.BLOCKWIDTH, true); // SETS STARTING POSITION
             }
@@ -170,6 +175,7 @@ class SceneManager {
         ctx.fillStyle = "White";
 
 
+
         if (this.title) {
             var width = 180;
             var height = 90;
@@ -177,7 +183,15 @@ class SceneManager {
             ctx.drawImage(titlecard, 2.5 * PARAMS.BLOCKWIDTH, 2 * PARAMS.BLOCKWIDTH, width * PARAMS.SCALE, height * PARAMS.SCALE);
             ctx.fillStyle = this.game.mouse && this.game.mouse.y > 9 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 9.5 * PARAMS.BLOCKWIDTH ? "Grey" : "White";
             ctx.fillText("START", 6.75 * PARAMS.BLOCKWIDTH, 9.5 * PARAMS.BLOCKWIDTH);
+        } 
+
+        else if (!this.title && !this.inTransition) {
+            this.centerX = this.link.x + (PARAMS.BLOCKWIDTH / 2);
+            this.centerY = this.link.y + (PARAMS.BLOCKWIDTH / 2);
+            this.shadow = ASSET_MANAGER.getAsset("./sprites/lighting.png");
+            ctx.drawImage(this.shadow, 0, 0, PARAMS.CANVAS_WIDTH, PARAMS.CANVAS_HEIGHT);
         }
+
     }
 
 }
