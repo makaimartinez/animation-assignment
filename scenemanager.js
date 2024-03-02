@@ -37,9 +37,7 @@ class SceneManager {
 
         if (transition) {
             this.game.addEntity(new TransitionScreen(this.game, level, x, y, title, this.loading));
-        } 
-        
-        else if (!this.title) {
+        } else if (!this.title) {
             this.inTransition = false;
             // ENVIRONMENT
 
@@ -186,8 +184,6 @@ class SceneManager {
         } 
 
         else if (!this.title && !this.inTransition) {
-            this.centerX = this.link.x + (PARAMS.BLOCKWIDTH / 2);
-            this.centerY = this.link.y + (PARAMS.BLOCKWIDTH / 2);
             this.shadow = ASSET_MANAGER.getAsset("./sprites/lighting.png");
             ctx.drawImage(this.shadow, 0, 0, PARAMS.CANVAS_WIDTH, PARAMS.CANVAS_HEIGHT);
         }
