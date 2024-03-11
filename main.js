@@ -10,14 +10,17 @@ ASSET_MANAGER.queueDownload("./sprites/idlelink.png");
 ASSET_MANAGER.queueDownload("./sprites/title.png");
 ASSET_MANAGER.queueDownload("./sprites/stone.png");
 ASSET_MANAGER.queueDownload("./sprites/torch.png");
+ASSET_MANAGER.queueDownload("./sprites/chest.png");
 ASSET_MANAGER.queueDownload("./sprites/lighting.png");
 ASSET_MANAGER.queueDownload("./sprites/maze.png");
 
 
 
 
+
 // music
 ASSET_MANAGER.queueDownload("./music/testmusic.mp3");		// add music in future
+ASSET_MANAGER.queueDownload("./music/you.mp3");
 
 // sfx
 

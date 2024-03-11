@@ -42,3 +42,28 @@ class Torch {
     }
 
 }
+
+class Chest {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y});
+        this.x *= PARAMS.BLOCKWIDTH;
+        this.y *= PARAMS.BLOCKWIDTH;
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/chest.png");
+        this.size = 48; // 48 x 48 px 
+        this.BB = new BoundingBox(this.x, this.y, this.size, this.size, "chest");
+    };
+
+    update() {
+        
+
+    };
+
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet, this.x - this.game.camera.x, this.y - this.game.camera.y);
+        
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = "red";
+            this.BB.draw(ctx, this.game.camera);
+        }
+    };
+}

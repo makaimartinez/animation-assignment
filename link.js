@@ -159,9 +159,14 @@ class Link {
                     else if (that.lastBB.left < entity.BB.right) { 
                         // console.log("collided: on left ->" + that.lastBB.left);    
                         // console.log(that.BB.width);
-                        that.x = entity.BB.left - that.BB.width - 0.3; 
+                        that.x = entity.BB.left - that.BB.width; 
                         that.velocity.x = 0;
                     }
+                }
+                if(entity.BB.name == "chest")  {
+                    that.game.camera.clearEntities();
+                    that.game.camera.gameWon();
+                    
                 }
 
             }

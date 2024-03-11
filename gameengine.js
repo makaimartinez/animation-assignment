@@ -18,11 +18,6 @@ class GameEngine {
         this.up = false;
         this.down = false;
 
-        // this.click = null;
-        // this.mouse = null;
-        // this.wheel = null;
-        // this.keys = {};
-
         // Options and the Details
         this.options = options || {
             debugging: false,
@@ -134,6 +129,8 @@ class GameEngine {
         this.entities.push(entity);
     };
 
+    
+
     draw() {
         // Clear the whole canvas with transparent color (rgba(0, 0, 0, 0))
         // We erase it, but we never give it the chance to update the monitor as such.
@@ -162,7 +159,6 @@ class GameEngine {
 
         this.camera.update();                           // prioritize the camera and update after everything
 
-
         // counts backwards like we are removing as we iterate, doesn't miss any elements
         for (let i = this.entities.length - 1; i >= 0; --i) {
             if (this.entities[i].removeFromWorld) {     // checking for remove from world flag (true/null)
@@ -177,5 +173,4 @@ class GameEngine {
         this.update();
         this.draw();
     };
-
 }

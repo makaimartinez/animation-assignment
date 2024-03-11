@@ -117,6 +117,7 @@ class SceneManager {
             // ITEMS
             this.torch = new Torch(this.game, this.link);
             this.game.addEntity(this.torch);
+            this.game.addEntity(new Chest(this.game, 12.5, -5));
 
             // PLAYER
             this.link.x = x;
@@ -142,8 +143,7 @@ class SceneManager {
             for (let col = 0; col < maze[row].length; col++) {
                 const character = maze[row][col];
                 if (character !== ' ') {
-                    this.game.addEntity(new Maze(this.game, row + 1, col - 9)); // top left corner coords are 1, -9
-
+                    this.game.addEntity(new Maze(this.game, row + 1, col - 9));     // top left corner coords are 1, -9
                 }
             }
         }
@@ -197,6 +197,13 @@ class SceneManager {
 
     }
 
+    gameWon() {
+        this.won = true;
+        ASSET_MANAGER.pauseBackgroundMusic();
+        ASSET_MANAGER.playAsset("./music/you.mp3");
+        
+    }
+
     draw() {
         ctx.font = PARAMS.BLOCKWIDTH / 2 + 'px "Press Start 2P"';
         ctx.fillStyle = "White";
@@ -212,9 +219,19 @@ class SceneManager {
             ctx.fillText("START", 6.75 * PARAMS.BLOCKWIDTH, 9.5 * PARAMS.BLOCKWIDTH);
         } 
 
-        else if (!this.title && !this.inTransition) {
+        else if (!this.title && !this.inTransition && !this.won) {
             this.shadow = ASSET_MANAGER.getAsset("./sprites/lighting.png");
             ctx.drawImage(this.shadow, 0, 0, PARAMS.CANVAS_WIDTH, PARAMS.CANVAS_HEIGHT);
+        }
+
+        else if (this.won) {
+            ctx.fillStyle = "Black";
+            ctx.fillRect(0, 0, PARAMS.CANVAS_WIDTH, PARAMS.CANVAS_WIDTH);
+
+            ctx.font = PARAMS.BLOCKWIDTH / 4 + 'px "Press Start 2P"';
+            ctx.fillStyle = "White";
+
+            ctx.fillText("You Found What You Were Looking For", 3.75 * PARAMS.BLOCKWIDTH, 7 * PARAMS.BLOCKWIDTH);
         }
 
     }
