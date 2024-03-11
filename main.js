@@ -11,6 +11,9 @@ ASSET_MANAGER.queueDownload("./sprites/title.png");
 ASSET_MANAGER.queueDownload("./sprites/stone.png");
 ASSET_MANAGER.queueDownload("./sprites/torch.png");
 ASSET_MANAGER.queueDownload("./sprites/lighting.png");
+ASSET_MANAGER.queueDownload("./sprites/maze.png");
+
+
 
 
 // music

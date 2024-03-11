@@ -37,8 +37,7 @@ class Torch {
         this.animations.drawFrame(tick, this.x, this.y, 1);
         // hitbox
         if (PARAMS.DEBUG) {
-            ctx.strokeStyle = "Red"
-            ctx.strokeRect(this.BB.x  - this.game.camera.x, this.BB.y - this.game.camera.y,  this.BB.width, this.BB.height);
+            this.BB.draw(ctx, this.game.camera);
         }
     }
 

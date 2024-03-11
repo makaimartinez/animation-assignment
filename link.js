@@ -15,7 +15,6 @@ class Link {
         this.prevX = null;
         this.prevY = null;
 
-
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/linksprites.png");
 
         // sprite frames per row = 12
@@ -23,7 +22,7 @@ class Link {
         // sprite height = 23 (but they all have space in between)
         this.animations = [];
         this.loadAnimations(this.spritesheet)
-        this.BB = new BoundingBox(this.x, this.y, this.width * PARAMS.SCALE, this.height * PARAMS.SCALE, "player");
+        this.BB = new BoundingBox(this.x, this.y, (this.width * PARAMS.SCALE), (this.height * PARAMS.SCALE), "player");
 
     }
 
@@ -82,7 +81,6 @@ class Link {
 
         const TICK = this.game.clockTick;
         const MIN_WALK = 30;
-        const MAX_WALK = 160;
         const ACC_WALK = 60;
 
         // check if dead
@@ -132,7 +130,7 @@ class Link {
         // gameworld coordinates are this.x and this.y
         this.x += this.velocity.x * TICK * PARAMS.SCALE;
         this.y += this.velocity.y * TICK * PARAMS.SCALE;
-
+        this.updateBB();
         this.collide();
         this.updateBB();
     }
@@ -142,17 +140,27 @@ class Link {
         this.game.entities.forEach(function(entity) {
             if(entity.BB && entity.BB != that && that.BB.collide(entity.BB)) {
                 if(entity.BB.name == "wall")  {
-                    if (that.facing == 0) {     // right
-                        that.x = that.prevX + that.velocity.x;
+
+                    if (that.lastBB.top >= entity.BB.bottom) {   // colliding from the bottom / player facing up
+                        // console.log("collided: on bottom");
+                        that.y = entity.BB.bottom;
+                        that.velocity.y = 0; 
                     }
-                    if (that.facing == 1) {     // left
-                        that.x = that.BB.x - that.velocity.x;
+                    else if (that.lastBB.bottom <= entity.BB.top) {     
+                        // console.log("collided: on top");
+                        that.y = entity.BB.top - that.BB.height; 
+                        that.velocity.y = 0;
                     }
-                    if (that.facing == 2) {     // up
-                        that.y -= that.velocity.y;
+                    else if (that.lastBB.right > entity.BB.left) {  
+                        // console.log("collided: on right" + that.lastBB.right);
+                        that.x = entity.BB.right; 
+                        that.velocity.x = 0;
                     }
-                    if (that.facing == 3) {     // down
-                        that.y = that.prevY - that.velocity.y;
+                    else if (that.lastBB.left < entity.BB.right) { 
+                        // console.log("collided: on left ->" + that.lastBB.left);    
+                        // console.log(that.BB.width);
+                        that.x = entity.BB.left - that.BB.width - 0.3; 
+                        that.velocity.x = 0;
                     }
                 }
 
@@ -161,7 +169,8 @@ class Link {
     }
 
     updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, this.width * PARAMS.SCALE, this.height * PARAMS.SCALE, "player");
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, (this.width * PARAMS.SCALE), (this.height * PARAMS.SCALE), "player");
     }
 
     updatePreviousXandY() {
@@ -169,14 +178,7 @@ class Link {
         this.prevY = this.y;
     }
 
-    getBottom() { return this.y + this.height; }
-    getOldBottom() { return this.prevY + this.height; }
-    getLeft(){ return this.x; }
-    getOldLeft(){ return this.prevX; }
-    getRight() { return this.x + this.width; }
-    getOldRight() { return this.prevX + this.width; }
-    getTop() { return this.y;}
-    getOldTop() { return this.prevY;}
+
 
     draw() {
         let tick = this.game.clockTick;
@@ -185,8 +187,7 @@ class Link {
 
         // hitbox
         if (PARAMS.DEBUG) {
-            ctx.strokeStyle = "Red"
-            ctx.strokeRect(this.BB.x  - this.game.camera.x, this.BB.y - this.game.camera.y,  this.BB.width, this.BB.height);
+            this.BB.draw(ctx, this.game.camera);
         }
     }
 

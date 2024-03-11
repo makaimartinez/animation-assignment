@@ -25,4 +25,9 @@ class BoundingBox {
     overlap(other) {
         
     }
+
+    draw(ctx, camera) {
+        ctx.strokeStyle = "Red";
+        ctx.strokeRect(this.x - camera.x, this.y - camera.y, this.width, this.height);
+    }
 }

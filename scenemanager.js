@@ -16,8 +16,8 @@ class SceneManager {
         this.animationCounter = 0;
 
 
-        this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH);
-        this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 13 * PARAMS.BLOCKWIDTH, false, this.title);
+        this.link = new Link(this.game, 2 * PARAMS.BLOCKWIDTH, 10 * PARAMS.BLOCKWIDTH);
+        this.loadGame(levelOne, 2 * PARAMS.BLOCKWIDTH, 10 * PARAMS.BLOCKWIDTH, false, this.title);
 
 
     };
@@ -42,7 +42,7 @@ class SceneManager {
             // ENVIRONMENT
 
             // left wall
-            for (let i = 0; i < 13; i++) {
+            for (let i = -10; i < 13; i++) {
                 this.game.addEntity(new Wall(this.game, -7, i));
                 this.game.addEntity(new Wall(this.game, -6, i));
                 this.game.addEntity(new Wall(this.game, -5, i));
@@ -54,7 +54,7 @@ class SceneManager {
             }
 
             // right wall
-            for (let i = 0; i < 13; i++) {
+            for (let i = -10; i < 13; i++) {
                 this.game.addEntity(new Wall(this.game, 16, i));
                 this.game.addEntity(new Wall(this.game, 17, i));
                 this.game.addEntity(new Wall(this.game, 18, i));
@@ -67,12 +67,12 @@ class SceneManager {
 
             // top wall
             for (let i = -7; i < 24; i++) {
-                this.game.addEntity(new Wall(this.game, i, 0));
-                this.game.addEntity(new Wall(this.game, i, -1));
-                this.game.addEntity(new Wall(this.game, i, -2));
-                this.game.addEntity(new Wall(this.game, i, -3));
-                this.game.addEntity(new Wall(this.game, i, -4));
-                this.game.addEntity(new Wall(this.game, i, -5));
+                this.game.addEntity(new Wall(this.game, i, -10));
+                this.game.addEntity(new Wall(this.game, i, -11));
+                this.game.addEntity(new Wall(this.game, i, -12));
+                this.game.addEntity(new Wall(this.game, i, -13));
+                this.game.addEntity(new Wall(this.game, i, -14));
+                this.game.addEntity(new Wall(this.game, i, -15));
             }
 
             // bottom wall
@@ -85,6 +85,28 @@ class SceneManager {
                 this.game.addEntity(new Wall(this.game, i, 17));
             }
 
+            // maze
+            const maze = [
+                ['X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+                ['X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' '],
+                ['X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                ['X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                ['X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' '], 
+                ['X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X'],
+                ['X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' '],
+                ['X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', ' ', ' ', ' ', ' '],
+                ['X', 'X', ' ', ' ', 'X', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X'],
+                ['X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', 'X'],
+                ['X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X'],
+                ['X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X'],
+                ['X', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', 'X', ' ', ' ', 'X', 'X'],
+                ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X'],
+                ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X', 'X'],
+
+            ];
+
+            this.mazeInterpretter(maze);
+
 
             // MUSIC
             if (level.music && !this.title) {
@@ -92,13 +114,9 @@ class SceneManager {
                 ASSET_MANAGER.playAsset(level.music);
             }
 
-
-
             // ITEMS
             this.torch = new Torch(this.game, this.link);
             this.game.addEntity(this.torch);
-
-
 
             // PLAYER
             this.link.x = x;
@@ -118,6 +136,18 @@ class SceneManager {
             this.game.camera.paused = false;
         }
     };
+
+    mazeInterpretter(maze) {
+        for (let row = 0; row < maze.length; row++) {
+            for (let col = 0; col < maze[row].length; col++) {
+                const character = maze[row][col];
+                if (character !== ' ') {
+                    this.game.addEntity(new Maze(this.game, row + 1, col - 9)); // top left corner coords are 1, -9
+
+                }
+            }
+        }
+    }
 
     loadAnimation(spritesheet) {
         let width = 16;
@@ -157,8 +187,7 @@ class SceneManager {
             if (this.game.click && this.game.click.y > 9 * PARAMS.BLOCKWIDTH && this.game.mouse.y < 9.5 * PARAMS.BLOCKWIDTH) {
                 this.title = false;
                 this.inTransition = true;
-                this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 6 * PARAMS.BLOCKWIDTH);
-                this.loadGame(levelOne, 2.5 * PARAMS.BLOCKWIDTH, 10 * PARAMS.BLOCKWIDTH, true); // SETS STARTING POSITION
+                this.loadGame(levelOne, 3.25 * PARAMS.BLOCKWIDTH, 9.5 * PARAMS.BLOCKWIDTH, true); // SETS STARTING POSITION
             }
         // } else {
         //     this.link = new Link(this.game, 2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
